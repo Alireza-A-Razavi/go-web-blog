@@ -25,6 +25,10 @@ func showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+
+	// We’re able to do pass in w to Fprintf function the io.Writer type is 
+	// an interface, and the http.ResponseWriter object satisfies the 
+	// interface because it has a w.Write() method.
 	fmt.Fprintf(w, "Display a specific snippet with %s", id)
 }
 
