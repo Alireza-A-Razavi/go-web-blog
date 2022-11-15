@@ -5,19 +5,26 @@ import (
 	"net/http"
 )
 
-// home is a handler that takes in two parameters
-// http.ResponseWriter provides methods for assembling
-// an HTTP response and sending it to the user
-// ----
-// http.Request is a struct which holds information
-// about the current request
 func home(w http.ResponseWriter, r *http.Request) {
+
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return 
+	}
+
 	w.Write([]byte("Hello World"))
 }
 
+func showSnippet(w http.ResponseWriter, r *http.Request) {
+
+	w.Write([]byte("this is the page to show snippets"))
+}
+
+func createSnippet(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("page to create snippets"))
+}
+
 func main() {
-	// initializing new servemux, then registering
-	// the function as handler for desired url
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
 
