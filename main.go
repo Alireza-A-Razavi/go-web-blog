@@ -21,6 +21,15 @@ func showSnippet(w http.ResponseWriter, r *http.Request) {
 }
 
 func createSnippet(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "POST" {
+		// WriteHeader is only possible to call once per response
+		// the default header status code is always 200 OK
+		w.Header().Set("Allow", "POST")
+		w.WriteHeader(405)
+		w.Write([]byte("Method not allowed"))
+		return
+	}
 	w.Write([]byte("page to create snippets"))
 }
 
