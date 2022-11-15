@@ -1,11 +1,12 @@
-package main
+package main 
 
 import (
 	"fmt"
-	"log"
-	"net/http"
 	"strconv"
+	"net/http"
 )
+
+
 
 func home(w http.ResponseWriter, r *http.Request) {
 
@@ -43,13 +44,4 @@ func createSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write([]byte("page to create snippets"))
-}
-
-func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
-
-	log.Println("Starting server on :4000 port")
-	err := http.ListenAndServe(":4000", mux)
-	log.Fatal(err)
 }
