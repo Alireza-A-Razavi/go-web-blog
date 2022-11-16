@@ -1,4 +1,4 @@
-module cho-snippets.com
+module lavireza.com
 
 go 1.13
 
