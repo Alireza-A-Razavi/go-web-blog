@@ -1,4 +1,4 @@
-module lavireza.com
+module alire.me
 
 go 1.13
 

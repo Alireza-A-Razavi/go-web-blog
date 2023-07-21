@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"lavireza.com/pkg/models/mysql"
+	"alire.me/pkg/models/mysql"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -36,7 +36,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
-		snippets:  &mysql.SnippetModel{DB: db},
+		snippets: &mysql.SnippetModel{DB: db},
 	}
 
 	srv := &http.Server{
@@ -50,16 +50,14 @@ func main() {
 	errorLog.Fatal(err)
 }
 
-
-
 func openDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, err
 	}
-	err = db.Ping() 
+	err = db.Ping()
 	if err != nil {
 		return nil, err
 	}
-	return db, nil 
+	return db, nil
 }
