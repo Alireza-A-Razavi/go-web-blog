@@ -1,4 +1,4 @@
-package models 
+package models
 
 import (
 	"errors"
@@ -7,12 +7,9 @@ import (
 
 var ErrorNoRecord = errors.New("models: no mathcing")
 
-
 type Snippet struct {
-	ID int
-	Title string
-	Content string 
-	Created time.Time
+	ID      int
+	Title   string
+	Content string
 	Created time.Time
 }
-
