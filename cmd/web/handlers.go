@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 	"strconv"
+
+	"alire.me/pkg/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -13,25 +14,34 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Include the footer partial in the template files.
-	files := []string{
-		"./ui/html/home.page.tmpl",
-		"./ui/html/base.layout.tmpl",
-		"./ui/html/footer.partial.tmpl",
-	}
-
-	ts, err := template.ParseFiles(files...)
+	s, err := app.snippets.Latest()
 	if err != nil {
-		app.errorLog.Println(err.Error())
 		app.serverError(w, err)
 		return
 	}
 
-	err = ts.Execute(w, nil)
-	if err != nil {
-		app.errorLog.Println(err.Error())
-		app.serverError(w, err)
+	for _, snippet := range s {
+		fmt.Fprintf(w, "%v", snippet)
 	}
+	// Include the footer partial in the template files.
+	// files := []string{
+	// 	"./ui/html/home.page.tmpl",
+	// 	"./ui/html/base.layout.tmpl",
+	// 	"./ui/html/footer.partial.tmpl",
+	// }
+
+	// ts, err := template.ParseFiles(files...)
+	// if err != nil {
+	// 	app.errorLog.Println(err.Error())
+	// 	app.serverError(w, err)
+	// 	return
+	// }
+
+	// err = ts.Execute(w, nil)
+	// if err != nil {
+	// 	app.errorLog.Println(err.Error())
+	// 	app.serverError(w, err)
+	// }
 }
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 
@@ -41,10 +51,16 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// We’re able to do pass in w to Fprintf function the io.Writer type is
-	// an interface, and the http.ResponseWriter object satisfies the
-	// interface because it has a w.Write() method.
-	fmt.Fprintf(w, "Display a specific snippet with %s", id)
+	s, err := app.snippets.Get(id)
+	if err == models.ErrorNoRecord {
+		app.notFound(w)
+		return
+	} else if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	fmt.Fprintf(w, "%v", s)
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
@@ -61,10 +77,10 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	content := "O Snail\nClimb mountain fuji\n but slowly slowly"
 	expires := "7"
 	id, err := app.snippets.Insert(title, content, expires)
-	if err != nil { 
+	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	
+
 	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", id), http.StatusSeeOther)
 }
