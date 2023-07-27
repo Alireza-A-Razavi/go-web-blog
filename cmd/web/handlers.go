@@ -20,10 +20,6 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, snippet := range s {
-		fmt.Fprintf(w, "%v", snippet)
-	}
-
     app.render(w, r, "home.page.tmpl", &templateData{
         Snippets: s,
     })
