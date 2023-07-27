@@ -34,7 +34,7 @@ func (m *SnippetModel) Get(id int) (*models.Snippet, error) {
 
 	s := &models.Snippet{}
 
-	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Created)
+	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (m *SnippetModel) Latest() ([]*models.Snippet, error) {
 
 	for rows.Next() {
 		s := &models.Snippet{}
-		err := rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created)
+		err := rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
 		if err != nil {
 			return nil, err
 		}
