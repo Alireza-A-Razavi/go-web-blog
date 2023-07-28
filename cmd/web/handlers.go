@@ -9,10 +9,7 @@ import (
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		app.notFound(w)
-		return
-	}
+    // pat takes care of the url matching 
 
 	s, err := app.snippets.Latest()
 	if err != nil {
@@ -26,7 +23,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+    id, err := strconv.Atoi(r.URL.Query().Get(":id"))
 	if err != nil || id < 1 {
 		app.notFound(w)
 		return
@@ -45,6 +42,10 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
         Snippet: s,
     })
 
+}
+
+func (app *application) createSnippetForm(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte("Create a new snippet..."))
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
