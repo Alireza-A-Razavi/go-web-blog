@@ -1,16 +1,19 @@
 package main
 
 import (
-    "html/template"
-    "path/filepath"
-    "time"
+	"html/template"
+	"net/url"
+	"path/filepath"
+	"time"
 
-    "alire.me/pkg/models"
+	"alire.me/pkg/models"
 )
 
 type templateData struct {
     Version string
     CurrentYear int
+    FormData url.Values
+    FormErrors map[string]string
 	Snippet *models.Snippet
     Snippets []*models.Snippet
 }
